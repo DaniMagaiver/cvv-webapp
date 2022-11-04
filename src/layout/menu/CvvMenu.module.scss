@@ -1,0 +1,25 @@
+.menu {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: black;
+  width: 75%;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  margin-top: 1.5rem;
+  margin-right: auto;
+  margin-left: auto;
+
+  &__link {
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  &__active,
+  &__link:hover {
+    color: #ffd700;
+    cursor: pointer;
+    text-decoration: none;
+  }
+}
