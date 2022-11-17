@@ -29,7 +29,7 @@ export default function CvvRoutes() {
           <Route path="administrar-voluntarios" element={<Volunteers />} />
         </Route>
         <Route path="voluntary" element={<Voluntary />}>
-          <Route path="chat" element={<VoluntaryChat />} />
+          <Route index path="chat" element={<VoluntaryChat />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
