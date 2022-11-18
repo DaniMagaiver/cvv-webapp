@@ -3,7 +3,7 @@ import Layout from "../layout";
 import Admin from "../pages/admin";
 import ApproveVolunteers from "../pages/admin/approve-volunteers";
 import Volunteers from "../pages/admin/volunteers";
-import Chat from "../pages/chat";
+import PatientChat from "../pages/patient-chat";
 import Contact from "../pages/contact";
 import Home from "../pages/home";
 import Login from "../pages/login";
@@ -19,7 +19,7 @@ export default function CvvRoutes() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="seja-voluntario" element={<NewUser />} />
-          <Route path="quero-conversar" element={<Chat />} />
+          <Route path="quero-conversar" element={<PatientChat />} />
           <Route path="fale-conosco" element={<Contact />} />
         </Route>
         <Route path="login" element={<Login />} />
@@ -29,7 +29,7 @@ export default function CvvRoutes() {
           <Route path="administrar-voluntarios" element={<Volunteers />} />
         </Route>
         <Route path="voluntary" element={<Voluntary />}>
-          <Route index path="chat" element={<VoluntaryChat />} />
+          <Route index element={<VoluntaryChat />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

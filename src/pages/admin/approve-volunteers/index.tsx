@@ -2,8 +2,17 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { IUser } from "../../../interfaces/models/IUser.interface";
 import Button from "@mui/material/Button";
 import style from "./ApproveVolunteers.module.scss";
+import { useLayoutEffect, useState } from "react";
+import useUser from "../../../shared/hooks/users.hook";
 
 export default function ApproveVolunteers() {
+  const [users, setUsers] = useState<IUser[]>([]);
+  const [selection, setSelection] = useState<any[]>([]);
+  const { listApprovals, approve } = useUser();
+
+  useLayoutEffect(() => {
+    listUsers();
+  }, []);
   const columns: GridColDef[] = [
     { field: "name", headerName: "Nome", width: 200 },
     { field: "birthDay", headerName: "Nascimento", width: 90 },
@@ -13,33 +22,43 @@ export default function ApproveVolunteers() {
     { field: "telephone", headerName: "Telefone", width: 150 },
   ];
 
-  const rows: IUser[] = [
-    {
-      id: "1",
-      name: "Danilo da Silva Fernandes",
-      birthDay: "25/02/1994",
-      city: "São Paulo",
-      email: "danilo.silfer@gmail.com",
-      status: "active",
-      telephone: "(11)99882-7329",
-      type: "admin",
-      uf: "SP",
-    },
-  ];
+  const listUsers = () => {
+    listApprovals().then((users) => {
+      setUsers(users);
+    });
+  };
+
+  const save = () => {
+    const saveUsers = selection.map((_id) => approve(_id));
+
+    Promise.all(saveUsers)
+      .then(() => {
+        listUsers();
+        alert("Usuários aprovados com sucesso!");
+      })
+      .catch(() => alert("Não foi possível aprovar os usuários"));
+  };
+
   return (
     <section>
       <DataGrid
+        getRowId={({ _id }) => _id}
         sx={{ height: 400 }}
         columns={columns}
-        rows={rows}
+        rows={users}
         pageSize={10}
-      ></DataGrid>
+        checkboxSelection
+        selectionModel={selection}
+        onSelectionModelChange={(newSelection) => setSelection(newSelection)}
+      />
       <div className={style.approveVolunteers__buttons}>
-        <Button sx={{ height: "100%" }} color="success">
+        <Button
+          disabled={!selection.length}
+          sx={{ height: "100%" }}
+          color="success"
+          onClick={save}
+        >
           APROVAR SELECIONADOS
-        </Button>
-        <Button sx={{ height: "100%" }} color="error">
-          REPROVAR SELECIONADOS
         </Button>
       </div>
     </section>

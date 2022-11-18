@@ -1,36 +1,44 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
-import { Alert } from '@mui/material';
-import * as yup from 'yup';
-import { useFormik } from 'formik';
+import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import { Alert } from "@mui/material";
+import * as yup from "yup";
+import { useFormik } from "formik";
 
-import style from './New-user.module.scss';
+import style from "./New-user.module.scss";
+
+import { IUser } from "../../interfaces/models/IUser.interface";
+import useUser from "../../shared/hooks/users.hook";
 
 export default function NewUser() {
+  const { createUser } = useUser();
   const navigate = useNavigate();
 
   const form = useFormik({
     initialValues: {
-      name: '',
-      email: '',
-      birthday: '',
-      state: '',
-      city: '',
-      phone: '',
+      name: "",
+      email: "",
+      birthDay: "",
+      uf: "",
+      city: "",
+      telephone: "",
     },
     validationSchema: yup.object({
-      name: yup.string().required('O campo é obrigatório.'),
-      email: yup.string().email().required('O campo é obrigatório.'),
-      birthday: yup.string().required('O campo é obrigatório.'),
-      state: yup.string().required('O campo é obrigatório.'),
-      city: yup.string().required('O campo é obrigatório.'),
-      phone: yup.string().required('O campo é obrigatório.'),
+      name: yup.string().required("O campo é obrigatório."),
+      email: yup.string().email().required("O campo é obrigatório."),
+      birthDay: yup.string().required("O campo é obrigatório."),
+      uf: yup.string().required("O campo é obrigatório."),
+      city: yup.string().required("O campo é obrigatório."),
+      telephone: yup.string().required("O campo é obrigatório."),
     }),
-    onSubmit: (values) => {
-      navigate('/voluntary/chat', {state:{...values}});
+    onSubmit: (
+      values: Omit<IUser, "_id" | "status" | "type" | "isApproved">
+    ) => {
+      createUser(values)
+        .then(() => alert("Novo usuário criado com sucesso!"))
+        .catch((error) => alert(error.messsage));
     },
   });
 
@@ -50,42 +58,42 @@ export default function NewUser() {
         <Grid container sx={{ marginTop: 2 }} spacing={2}>
           <Grid item xs={12}>
             <TextField
-              id='name'
+              id="name"
               fullWidth
-              label='Nome:'
+              label="Nome:"
               onChange={form.handleChange}
               onBlur={form.handleBlur}
             />
             {form.touched.name && form.errors.name && (
-              <Alert severity='error' className={style.error}>
+              <Alert severity="error" className={style.error}>
                 {form.errors.name}
               </Alert>
             )}
           </Grid>
           <Grid item xs={6}>
             <TextField
-              id='birthday'
+              id="birthDay"
               fullWidth
-              label='Data de nascimento:'
+              label="Data de nascimento:"
               onChange={form.handleChange}
               onBlur={form.handleBlur}
-           />
-            {form.touched.birthday && form.errors.birthday && (
-              <Alert severity='error' className={style.error}>
-                {form.errors.birthday}
+            />
+            {form.touched.birthDay && form.errors.birthDay && (
+              <Alert severity="error" className={style.error}>
+                {form.errors.birthDay}
               </Alert>
             )}
           </Grid>
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='email'
-              label='Email:'
+              id="email"
+              label="Email:"
               onChange={form.handleChange}
               onBlur={form.handleBlur}
             />
             {form.touched.email && form.errors.email && (
-              <Alert severity='error' className={style.error}>
+              <Alert severity="error" className={style.error}>
                 {form.errors.email}
               </Alert>
             )}
@@ -93,27 +101,27 @@ export default function NewUser() {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='state'
-              label='Estado:'
+              id="uf"
+              label="Estado:"
               onChange={form.handleChange}
               onBlur={form.handleBlur}
             />
-            {form.touched.state && form.errors.state && (
-              <Alert severity='error' className={style.error}>
-                {form.errors.state}
+            {form.touched.uf && form.errors.uf && (
+              <Alert severity="error" className={style.error}>
+                {form.errors.uf}
               </Alert>
             )}
           </Grid>
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='city'
-              label='Cidade:'
+              id="city"
+              label="Cidade:"
               onChange={form.handleChange}
               onBlur={form.handleBlur}
             />
             {form.touched.city && form.errors.city && (
-              <Alert severity='error' className={style.error}>
+              <Alert severity="error" className={style.error}>
                 {form.errors.city}
               </Alert>
             )}
@@ -121,15 +129,14 @@ export default function NewUser() {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='phone'
-              label='Telefone:'
+              id="telephone"
+              label="Telefone:"
               onChange={form.handleChange}
               onBlur={form.handleBlur}
-              type="number"
             />
-            {form.touched.phone && form.errors.phone && (
-              <Alert severity='error' className={style.error}>
-                {form.errors.phone}
+            {form.touched.telephone && form.errors.telephone && (
+              <Alert severity="error" className={style.error}>
+                {form.errors.telephone}
               </Alert>
             )}
           </Grid>
@@ -137,9 +144,9 @@ export default function NewUser() {
             <Button
               fullWidth
               sx={{ height: 50 }}
-              variant='text'
-              color='primary'
-              type='submit'
+              variant="text"
+              color="primary"
+              type="submit"
             >
               ENVIAR
             </Button>

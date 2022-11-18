@@ -1,5 +1,5 @@
 export interface IUser {
-  id: string;
+  _id: string;
   name: string;
   birthDay: string;
   email: string;
@@ -8,4 +8,5 @@ export interface IUser {
   telephone: string;
   status: "active" | "inactive";
   type: "volunteer" | "admin";
+  isApproved: boolean;
 }
